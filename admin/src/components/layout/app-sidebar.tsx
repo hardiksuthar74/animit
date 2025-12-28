@@ -1,23 +1,22 @@
-import { useLayout } from '@/context/layout-provider'
+import { useLayout } from "@/context/layout-provider";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 // import { AppTitle } from './app-title'
-import { sidebarData } from './data/sidebar-data'
-import { NavGroup } from './nav-group'
-import { NavUser } from './nav-user'
-import { TeamSwitcher } from './team-switcher'
+import { sidebarData } from "./data/sidebar-data";
+import { NavGroup } from "./nav-group";
+import { AppLogo } from "./app-logo";
 
 export function AppSidebar() {
-  const { collapsible, variant } = useLayout()
+  const { collapsible, variant } = useLayout();
+
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
-        <TeamSwitcher teams={sidebarData.teams} />
+        <AppLogo />
 
         {/* Replace <TeamSwitch /> with the following <AppTitle />
          /* if you want to use the normal app title instead of TeamSwitch dropdown */}
@@ -28,10 +27,16 @@ export function AppSidebar() {
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={sidebarData.user} />
-      </SidebarFooter>
+      {/* <SidebarFooter>
+        <NavUser
+          user={{
+            avatar: auth.user?.email?.[0]?.toUpperCase() as string,
+            email: auth.user?.email as string,
+            name: auth.user?.email?.split("@")[0] as string,
+          }}
+        />
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
