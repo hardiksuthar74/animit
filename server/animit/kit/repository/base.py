@@ -1,4 +1,4 @@
-from collections.abc import AsyncGenerator, Sequence
+from collections.abc import Sequence
 from typing import Any, Protocol, Self
 
 from sqlalchemy import Select, func, over, select
@@ -6,7 +6,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.base import ExecutableOption
 
-from animit.config import settings
 from animit.kit.db.postgres import AsyncReadSession, AsyncSession
 
 
@@ -60,33 +59,6 @@ class RepositoryBase[M]:
     async def get_all(self, statement: Select[tuple[M]]) -> Sequence[M]:
         result = await self.session.execute(statement)
         return result.scalars().unique().all()
-
-    async def stream(self, statement: Select[tuple[M]]) -> AsyncGenerator[M, None]:
-        """
-        Stream results from the database using the given statement.
-
-        This is useful for processing large datasets without loading everything
-        into memory at once.
-
-        The caveat is that your statement shouldn't join many-to-one or
-        many-to-many relationships, as we can't apply ORM's `unique()` method
-        to the results, which may lead to duplicates.
-
-        Args:
-            statement: The SQLAlchemy select statement to execute.
-
-        Yields:
-            Instances of the model `M` as they are fetched from the database.
-        """
-        results = await self.session.stream_scalars(
-            statement,
-            execution_options={"yield_per": settings.DATABASE_STREAM_YIELD_PER},
-        )
-        try:
-            async for result in results:
-                yield result
-        finally:
-            await results.close()
 
     async def paginate(
         self, statement: Select[tuple[M]], *, limit: int, page: int
