@@ -7,10 +7,7 @@ const viteConfig = defineConfig({
   description: "An anime tracker app",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: "Home", link: "/" },
-      { text: "Examples", link: "/markdown-examples" },
-    ],
+    nav: [{ text: "Home", link: "/" }],
 
     sidebar: [
       {
@@ -26,12 +23,14 @@ const viteConfig = defineConfig({
           { text: "User Anime", link: "/user-anime" },
           { text: "Discovery", link: "/discovery" },
           { text: "Recommendation", link: "/recommendation" },
+          { text: "Notification", link: "/notification" },
+          { text: "Analytics", link: "/analytics" },
         ],
       },
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
+      { icon: "github", link: "https://github.com/hardiksuthar74/animit" },
     ],
   },
 });
